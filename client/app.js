@@ -10,6 +10,25 @@ $('#show-all').on('click', function(){
   });
 });
 
+$('#submit-phrase').on('click', function() {
+  let phrase = {
+    korean: $('#korean-phrase').val(),
+    english: $('#english-phrase').val()
+  }
+
+  $.ajax({
+    method: 'POST',
+    url: 'http://localhost:1337/phrases',
+    data: JSON.stringify(phrase)
+  })
+  .done(function(){
+    console.log(`${phrase.korean} has been added to the list!`);
+    $('#korean-phrase').val('');
+    $('#english-phrase').val('');
+  })
+
+});
+
 function renderPhrases(phrases) {
   $('#phrases').html('');
   phrases.forEach((phrase) => {
