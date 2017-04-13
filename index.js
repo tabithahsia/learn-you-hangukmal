@@ -1,4 +1,5 @@
 const http = require('http');
+const fs = require('fs');
 
 const phrases = require('./data/phrases');
 
@@ -26,18 +27,30 @@ const server = http.createServer(function(request, response){
       // concatenate all the chunks of data together
       request.on('end', function(){
         let newPhrase = JSON.parse(data);
+        // add an id to the phrase (using the length of phrases)
         newPhrase.id = phrases.length;
+        // push phrase into the collection of phrases
         phrases.push(newPhrase);
 
+        // close out the response cycle
         response.writeHead(201);
         response.end(`Added ${newPhrase.korean} to the list`);
-      })
-      // add an id to the phrase (using the length of phrases)
-      // push phrase into the collection of phrases
+      });
     }
+  } else if (request.url === '/' && request.method === 'GET') {
+    // GET / - serve up index.html
+    fs.readFile(__dirname + '/client/index.html', function(err, data){
+      if (err) { console.error(err); }
+
+      response.setHeader('Content-Type', 'text/html;charset=utf-8');
+      // response.writeHead(200);
+      response.end(data);
+    });
+  } else {
+    console.log('the server heard a request');
+    response.end('here is the response');
   }
-  console.log('the server heard a request');
-  response.end('here is the response');
+
 });
 
 console.log('firing up the server...');
