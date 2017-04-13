@@ -43,7 +43,15 @@ const server = http.createServer(function(request, response){
       if (err) { console.error(err); }
 
       response.setHeader('Content-Type', 'text/html;charset=utf-8');
-      // response.writeHead(200);
+      response.writeHead(200);
+      response.end(data);
+    });
+  } else if (request.url === '/client/app.js' && request.method === 'GET') {
+    fs.readFile(__dirname + '/client/app.js', function(err, data){
+      if (err) { console.error(err); }
+
+      response.setHeader('Content-Type', 'application/javascript;charset=utf-8');
+      response.writeHead(200);
       response.end(data);
     });
   } else {
