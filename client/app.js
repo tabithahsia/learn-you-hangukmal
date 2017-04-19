@@ -10,6 +10,17 @@ $('#show-all').on('click', function(){
   });
 });
 
+$('#show-one').on('click', function(){
+  let phraseId = Math.floor(Math.random() * 9);
+  $.ajax({
+    method: 'GET',
+    url: `http://localhost:1337/phrases/${phraseId}`
+  })
+  .done(function(phrase){
+    renderPhrases([phrase]);
+  })
+})
+
 $('#submit-phrase').on('click', function() {
   let phrase = {
     korean: $('#korean-phrase').val(),
@@ -19,7 +30,8 @@ $('#submit-phrase').on('click', function() {
   $.ajax({
     method: 'POST',
     url: 'http://localhost:1337/phrases',
-    data: JSON.stringify(phrase)
+    data: JSON.stringify(phrase),
+    contentType: 'application/json'
   })
   .done(function(){
     console.log(`${phrase.korean} has been added to the list!`);
