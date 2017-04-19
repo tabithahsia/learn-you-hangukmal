@@ -6,12 +6,15 @@ const PORT = 1337;
 const IP = '127.0.01';
 const app = express();
 
+app.use((req, res, next) => {
+  console.log(`SERVING: ${req.method} to ${req.url}`);
+  next(); //specifies that we can go to the next thing
+})
 //serve static assets
 app.use('/client', express.static(__dirname + '/client'));
 
 app.get('/', (req, res) => { //similar to request.method === get
   res.sendFile(__dirname + '/client/index.html');
-
 });
 
 app.listen(PORT, () => {
