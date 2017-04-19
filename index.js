@@ -6,6 +6,9 @@ const PORT = 1337;
 const IP = '127.0.01';
 const app = express();
 
+//serve static assets
+app.use('/client', express.static(__dirname + '/client'));
+
 app.get('/', (req, res) => { //similar to request.method === get
   res.sendFile(__dirname + '/client/index.html');
 
